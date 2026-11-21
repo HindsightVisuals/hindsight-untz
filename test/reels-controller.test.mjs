@@ -103,3 +103,17 @@ test('never two reels unpaused at once across a scroll sequence', () => {
     assert.ok([demo, live].filter(v => !v.paused).length <= 1, `${d},${l}`);
   }
 });
+
+test('onActive fires with the new key only when the active reel changes', () => {
+  const seen = [];
+  const mk = () => ({ paused: true, muted: true, play() { this.paused = false; return Promise.resolve(); }, pause() { this.paused = true; } });
+  const c = createReelController([
+    { key: 'demo', video: mk(), onState() {} },
+    { key: 'live', video: mk(), onState() {} },
+  ], { onActive: k => seen.push(k) });
+  c.setRatio('demo', 1); c.apply();
+  c.setRatio('demo', 0.9); c.apply();
+  c.setRatio('demo', 0); c.setRatio('live', 1); c.apply();
+  c.setRatio('live', 0); c.apply();
+  assert.deepEqual(seen, ['demo', 'live', null]);
+});

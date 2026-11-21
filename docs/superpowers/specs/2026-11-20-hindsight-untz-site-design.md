@@ -110,3 +110,4 @@ copy draft.
 - The "Click for sound" label disappears once sound is on, and returns if muted again.
 - The about copy ends at "…so the room sees what it hears."
 - The booking/contact section and its nav link were removed; the page ends on the client list.
+- Phones: the playing reel shows "Rotate for full screen" in portrait (until the first rotation), and fills the screen in landscape (CSS on the inline video, no Fullscreen API).

@@ -8,6 +8,24 @@ export function initReels(root = document) {
   const els = figures.map(fig => ({ key: fig.dataset.reel, fig, video: fig.querySelector('video'), label: fig.querySelector('.reel-sound') }));
   const soundText = () => (c.sound.muted ? 'Click for sound' : 'Sound on');
 
+  // Phones: rotating to landscape fills the screen with the playing reel. It's CSS on the inline video, so no
+  // gesture or Fullscreen API is needed (iOS refuses those without a tap).
+  const touch = matchMedia('(hover: none) and (pointer: coarse)');
+  const landscape = matchMedia('(orientation: landscape)');
+  for (const e of els) {
+    const hint = document.createElement('span');
+    hint.className = 'reel-rotate label';
+    hint.setAttribute('aria-hidden', 'true');
+    hint.textContent = '↻ Rotate for full screen';
+    e.fig.appendChild(hint);
+  }
+  const syncFull = () => {
+    const full = touch.matches && landscape.matches && !!c.active;
+    document.documentElement.classList.toggle('reel-full', full);
+    if (full) document.documentElement.classList.add('rotated-once');
+  };
+  landscape.addEventListener('change', syncFull);
+
   const c = createReelController(els.map(e => ({
     key: e.key,
     video: e.video,
@@ -15,7 +33,12 @@ export function initReels(root = document) {
       e.fig.classList.toggle('needs-tap', state === 'blocked');
       e.label.textContent = state === 'blocked' ? 'Tap to play' : soundText();
     },
-  })));
+  })), {
+    onActive: key => {
+      for (const e of els) e.fig.classList.toggle('is-active', e.key === key);
+      syncFull();
+    },
+  });
 
   c.sound.subscribe(muted => {
     for (const e of els) {

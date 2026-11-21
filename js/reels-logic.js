@@ -15,7 +15,7 @@ export function pickActive(ratios, minRatio = 0.35) {
  * reels: [{ key, video, onState(state) }] where state is 'playing' | 'blocked'. DOM-free so it can be tested
  * with stub videos; js/reels.js feeds it intersection ratios and events.
  */
-export function createReelController(reels, { minRatio = 0.35 } = {}) {
+export function createReelController(reels, { minRatio = 0.35, onActive = () => {} } = {}) {
   const sound = createSound();
   const ratios = Object.fromEntries(reels.map(r => [r.key, 0]));
   const blocked = new Set();
@@ -35,7 +35,8 @@ export function createReelController(reels, { minRatio = 0.35 } = {}) {
   }
 
   function apply() {
-    active = hidden ? null : pickActive(ratios, minRatio);
+    const next = hidden ? null : pickActive(ratios, minRatio);
+    if (next !== active) { active = next; onActive(active); }
     for (const r of reels) {
       if (r.key === active) { if (r.video.paused && !blocked.has(r.key)) tryPlay(r); }
       else if (!r.video.paused) r.video.pause();
