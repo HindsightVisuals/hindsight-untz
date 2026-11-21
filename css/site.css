@@ -37,7 +37,12 @@ img, video { display: block; max-width: 100%; }
   transition: opacity 600ms ease, clip-path 600ms cubic-bezier(0.7, 0, 0.3, 1);
   clip-path: inset(0 0 0 0);
 }
+#loader { overflow: hidden; }
 #loader video { width: min(70vw, 900px); height: auto; filter: grayscale(1); }
+/* phones: 3x, the frame is mostly black so the overflow crops nothing visible */
+@media (max-width: 600px) {
+  #loader video { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 210vw; max-width: none; }
+}
 #loader.out { opacity: 0; clip-path: inset(0 0 100% 0); }
 
 /* ---------- type atoms ---------- */
