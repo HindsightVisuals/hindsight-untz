@@ -1,6 +1,6 @@
-import { runLoader } from './loader.js';
-import { initReels } from './reels.js';
-import { startRD } from './rd.js';
+import { runLoader } from './loader.js?v=202611201807';
+import { initReels } from './reels.js?v=202611201807';
+import { startRD } from './rd.js?v=202611201807';
 
 const canvas = document.getElementById('rd-canvas');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
