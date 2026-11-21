@@ -17,8 +17,11 @@ export function initReels(root = document) {
     },
   })));
 
-  c.sound.subscribe(() => {
-    for (const e of els) if (!e.fig.classList.contains('needs-tap')) e.label.textContent = soundText();
+  c.sound.subscribe(muted => {
+    for (const e of els) {
+      e.fig.classList.toggle('sound-on', !muted); // the CSS hides the label once sound is on
+      if (!e.fig.classList.contains('needs-tap')) e.label.textContent = soundText();
+    }
   });
 
   const io = new IntersectionObserver(entries => {

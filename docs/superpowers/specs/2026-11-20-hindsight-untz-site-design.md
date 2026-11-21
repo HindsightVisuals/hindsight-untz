@@ -102,3 +102,11 @@ page, with the colours inverted:
 
 The grid layout and which 10 photos make it, the loader exit transition, the exact RD tuning values, and the about
 copy draft.
+
+## Changes after first review (Adam, 2026-11-20)
+
+- The hero label is "Demo reel" (no year).
+- Photo 03 was swapped for Submersion 0022.
+- The "Click for sound" label disappears once sound is on, and returns if muted again.
+- The about copy ends at "…so the room sees what it hears."
+- The booking/contact section and its nav link were removed; the page ends on the client list.

@@ -47,7 +47,6 @@ img, video { display: block; max-width: 100%; }
 
 /* 45° chamfer, top-right + bottom-left (Wes) */
 .chamfer { clip-path: polygon(0 0, calc(100% - var(--chamfer)) 0, 100% var(--chamfer), 100% 100%, var(--chamfer) 100%, 0 calc(100% - var(--chamfer))); }
-.chamfer-sm { --chamfer: 8px; clip-path: polygon(0 0, calc(100% - var(--chamfer)) 0, 100% var(--chamfer), 100% 100%, var(--chamfer) 100%, 0 calc(100% - var(--chamfer))); }
 
 /* HUD corner brackets on hover / focus (Wes) */
 .hud { position: relative; padding: 6px 10px; }
@@ -88,6 +87,8 @@ main { padding: var(--nav-h) var(--pad) 0; max-width: 1680px; margin: 0 auto; }
   padding: 10px 16px; background: rgba(0, 0, 0, 0.6); border: 1px solid #fff; white-space: nowrap;
 }
 .reel:hover .reel-hud, .reel:focus-visible .reel-hud, .reel.needs-tap .reel-hud { opacity: 1; }
+/* once sound is on, the label goes away for good; clicking still toggles */
+.reel.sound-on:not(.needs-tap) .reel-sound { display: none; }
 /* touch screens: keep a small sound chip visible, no hover there */
 @media (hover: none) {
   .reel-hud { opacity: 1; }
@@ -116,28 +117,8 @@ main { padding: var(--nav-h) var(--pad) 0; max-width: 1680px; margin: 0 auto; }
   display: flex; flex-wrap: wrap; gap: 0.15em 0.55em;
   font: 700 clamp(26px, 4.2vw, 64px)/1.08 var(--loos-x); text-transform: uppercase;
 }
+#list { padding-bottom: clamp(72px, 14vh, 160px); }
 .clients li:not(:last-child)::after { content: " /"; color: var(--muted); }
-
-/* ---------- contact ---------- */
-.contact { padding-bottom: clamp(72px, 14vh, 160px); }
-.contact-head { margin: 0 0 32px; font: 700 clamp(34px, 7vw, 112px)/0.95 var(--loos-x); text-transform: uppercase; letter-spacing: -0.01em; }
-/* White outline that fills white on hover. A clip-path would cut a CSS border off the chamfered corners, so the
-   outline is the white element showing 1px around a black chamfered inner layer that fades out on hover. */
-.btn {
-  position: relative; isolation: isolate; display: inline-block; padding: 16px 28px;
-  background: #fff; color: #fff;
-  font: 700 13px var(--mono); letter-spacing: 0.16em; text-transform: uppercase;
-  transition: color 160ms ease;
-}
-.btn::before {
-  content: ""; position: absolute; inset: 1px; z-index: -1; background: #000;
-  clip-path: polygon(0 0, calc(100% - var(--chamfer) + 0.4px) 0, 100% calc(var(--chamfer) - 0.4px), 100% 100%, calc(var(--chamfer) - 0.4px) 100%, 0 calc(100% - var(--chamfer) + 0.4px));
-  transition: opacity 160ms ease;
-}
-.btn:hover, .btn:focus-visible { color: #000; }
-.btn:hover::before, .btn:focus-visible::before { opacity: 0; }
-.contact-mail { display: block; margin-top: 20px; color: var(--muted); }
-.contact-mail:hover { color: #fff; }
 
 /* ---------- footer ---------- */
 .foot { display: flex; justify-content: space-between; gap: 16px; padding: 24px var(--pad) calc(24px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); }
