@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hindsight × Untz</title>
+<meta name="description" content="Hindsight: live visuals, VJ sets and show design. A portfolio for The Untz.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="media/wordmark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Krona+One&display=swap">
+<!-- Loos comes from the Wes Typekit kit. It is domain-locked, so add untz.thisishindsight.com to the kit or it falls back to Krona One -->
+<link rel="preconnect" href="https://use.typekit.net" crossorigin>
+<link rel="stylesheet" href="https://use.typekit.net/jhm5bdq.css">
+<link rel="stylesheet" href="css/site.css">
+<script type="module" src="js/main.js"></script>
+</head>
+<body class="loading">
+
+<div id="loader" aria-hidden="true">
+  <video id="loader-video" muted playsinline preload="auto" src="media/video/loader.mp4"></video>
+</div>
+
+<canvas id="rd-canvas" aria-hidden="true"></canvas>
+<div class="rd-gradient" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="nav-mark" href="#top" aria-label="Hindsight, back to top"><img src="media/wordmark.svg" alt="Hindsight"></a>
+  <nav class="nav-links" aria-label="Sections">
+    <a class="hud" href="#live">Live</a>
+    <a class="hud" href="#about">About</a>
+    <a class="hud" href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="label-row"><span class="label">Demo reel 2024</span><span class="label muted">Prepared for The Untz</span></div>
+    <figure class="reel chamfer" data-reel="demo">
+      <video muted playsinline loop preload="auto" poster="media/video/demo-reel-poster.jpg" src="media/video/demo-reel.mp4"></video>
+      <figcaption class="reel-hud"><span class="reel-sound label">Click for sound</span></figcaption>
+    </figure>
+  </section>
+
+  <section id="gallery" class="block">
+    <div class="label-row"><span class="label">01 — Live</span><span class="label muted">Photos</span></div>
+    <div class="gallery">
+      <img class="wide" src="media/img/01-1600.webp" srcset="media/img/01-800.webp 800w, media/img/01-1600.webp 1600w" sizes="(max-width: 600px) 100vw, 66vw" alt="Hindsight live visuals" loading="lazy" decoding="async">
+      <img src="media/img/02-1600.webp" srcset="media/img/02-800.webp 800w, media/img/02-1600.webp 1600w" sizes="(max-width: 600px) 100vw, 33vw" alt="Hindsight live visuals" loading="lazy" decoding="async">
+      <img src="media/img/03-1600.webp" srcset="media/img/03-800.webp 800w, media/img/03-1600.webp 1600w" sizes="(max-width: 600px) 100vw, 33vw" alt="Hindsight live visuals" loading="lazy" decoding="async">
+      <img src="media/img/04-1600.webp" srcset="media/img/04-800.webp 800w, media/img/04-1600.webp 1600w" sizes="(max-width: 600px) 100vw, 33vw" alt="Hindsight live visuals" loading="lazy" decoding="async">
+      <img src="media/img/05-1600.webp" srcset="media/img/05-800.webp 800w, media/img/05-1600.webp 1600w" sizes="(max-width: 600px) 100vw, 33vw" alt="Hindsight live visuals" loading="lazy" decoding="async">
+      <img src="media/img/06-1600.webp" srcset="media/img/06-800.webp 800w, media/img/06-1600.webp 1600w" sizes="(max-width: 600px) 100vw, 33vw" alt="Hindsight live visuals" loading="lazy" decoding="async">
+      <img src="media/img/07-1600.webp" srcset="media/img/07-800.webp 800w, media/img/07-1600.webp 1600w" sizes="(max-width: 600px) 100vw, 33vw" alt="Hindsight live visuals" loading="lazy" decoding="async">
+      <img class="wide" src="media/img/08-1600.webp" srcset="media/img/08-800.webp 800w, media/img/08-1600.webp 1600w" sizes="(max-width: 600px) 100vw, 66vw" alt="Hindsight live visuals" loading="lazy" decoding="async">
+      <img src="media/img/09-1600.webp" srcset="media/img/09-800.webp 800w, media/img/09-1600.webp 1600w" sizes="(max-width: 600px) 100vw, 33vw" alt="Hindsight live visuals" loading="lazy" decoding="async">
+      <img src="media/img/10-1600.webp" srcset="media/img/10-800.webp 800w, media/img/10-1600.webp 1600w" sizes="(max-width: 600px) 100vw, 33vw" alt="Hindsight live visuals" loading="lazy" decoding="async">
+    </div>
+  </section>
+
+  <section id="live" class="block">
+    <div class="label-row"><span class="label">02 — Live show reel</span><span class="label muted">2026</span></div>
+    <figure class="reel chamfer" data-reel="live">
+      <video muted playsinline loop preload="metadata" poster="media/video/live-reel-poster.jpg" src="media/video/live-reel.mp4"></video>
+      <figcaption class="reel-hud"><span class="reel-sound label">Click for sound</span></figcaption>
+    </figure>
+  </section>
+
+  <section id="about" class="block two-col">
+    <div class="label-row"><span class="label">03 — About</span></div>
+    <!-- DRAFT: Adam to rewrite -->
+    <p class="about-copy">Hindsight builds the visual side of the show: live VJ sets, custom stage content, album art and artist branding for bass and electronic music. Every set is played, not pressed: visuals mixed live and locked to the music so the room sees what it hears. From club rooms to festival stages, the goal is the same. Make the night look like it sounds.</p>
+  </section>
+
+  <section id="list" class="block two-col">
+    <div class="label-row"><span class="label">04 — Worked + performed with</span></div>
+    <ul class="clients">
+      <li>Know Good</li>
+      <li>Mickman</li>
+      <li>VCTRE</li>
+      <li>Thought Process</li>
+      <li>Dr. USHUU</li>
+      <li>Copycat</li>
+      <li>Kursa</li>
+      <li>EOS</li>
+      <li>Crawdad Sniper</li>
+      <li>Aliz Perez</li>
+      <li>Faceplant</li>
+      <li>Foxtail</li>
+      <li>LYNY</li>
+      <li>Humandala</li>
+      <li>Petals</li>
+    </ul>
+  </section>
+
+  <section id="contact" class="block contact">
+    <div class="label-row"><span class="label">05 — Booking</span></div>
+    <h2 class="contact-head">Let’s light up the Untz.</h2>
+    <a class="btn chamfer-sm" href="mailto:vision@thisishindsight.com">Book Hindsight</a>
+    <a class="contact-mail label" href="mailto:vision@thisishindsight.com">vision@thisishindsight.com</a>
+  </section>
+</main>
+
+<footer class="foot">
+  <span class="label muted">© 2026 Hindsight</span>
+  <span class="label muted">thisishindsight.com</span>
+</footer>
+
+</body>
+</html>
