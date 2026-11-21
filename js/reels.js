@@ -1,66 +1,43 @@
-// Both reels: only the most-visible one plays, and sound is one page-wide setting.
-import { pickActive, createSound } from './reels-logic.js';
+// DOM wiring for both reels. The playback rules live in reels-logic.js (createReelController).
+import { createReelController } from './reels-logic.js';
 
 export function initReels(root = document) {
   const figures = [...root.querySelectorAll('.reel[data-reel]')];
   if (!figures.length) return;
-  const reels = figures.map(fig => ({ key: fig.dataset.reel, fig, video: fig.querySelector('video'), label: fig.querySelector('.reel-sound') }));
-  const ratios = Object.fromEntries(reels.map(r => [r.key, 0]));
-  const sound = createSound();
-  let active = null;
 
-  const tryPlay = r => r.video.play().then(
-    () => r.fig.classList.remove('needs-tap'),
-    () => { r.fig.classList.add('needs-tap'); r.label.textContent = 'Tap to play'; },
-  );
+  const els = figures.map(fig => ({ key: fig.dataset.reel, fig, video: fig.querySelector('video'), label: fig.querySelector('.reel-sound') }));
+  const soundText = () => (c.sound.muted ? 'Click for sound' : 'Sound on');
 
-  function apply() {
-    active = document.hidden ? null : pickActive(ratios);
-    for (const r of reels) {
-      if (r.key === active) { if (r.video.paused) tryPlay(r); }
-      else if (!r.video.paused) r.video.pause();
-    }
-  }
+  const c = createReelController(els.map(e => ({
+    key: e.key,
+    video: e.video,
+    onState: state => {
+      e.fig.classList.toggle('needs-tap', state === 'blocked');
+      e.label.textContent = state === 'blocked' ? 'Tap to play' : soundText();
+    },
+  })));
 
-  const steps = Array.from({ length: 21 }, (_, i) => i / 20);
-  const io = new IntersectionObserver(entries => {
-    for (const e of entries) ratios[e.target.dataset.reel] = e.isIntersecting ? e.intersectionRatio : 0;
-    apply();
-  }, { threshold: steps });
-  for (const r of reels) io.observe(r.fig);
-
-  sound.subscribe(muted => {
-    for (const r of reels) {
-      r.video.muted = muted;
-      r.label.textContent = muted ? 'Click for sound' : 'Sound on';
-    }
+  c.sound.subscribe(() => {
+    for (const e of els) if (!e.fig.classList.contains('needs-tap')) e.label.textContent = soundText();
   });
 
-  for (const r of reels) {
-    r.fig.tabIndex = 0;
-    r.fig.setAttribute('role', 'button');
-    r.fig.setAttribute('aria-label', 'Toggle sound');
-    const onActivate = () => {
-      // A blocked autoplay: the first tap starts playback rather than flipping sound.
-      if (r.fig.classList.contains('needs-tap')) {
-        r.label.textContent = sound.muted ? 'Click for sound' : 'Sound on';
-        tryPlay(r);
-        return;
-      }
-      sound.toggle();
-      // iOS only lets an element play with sound if play() ran inside a gesture. Touch every reel here, then
-      // pause whichever isn't on screen, so the other reel can later start with sound when it scrolls in.
-      for (const other of reels) {
-        const p = other.video.play();
-        if (other.key !== active) p.then(() => other.video.pause(), () => {});
-        else p.catch(() => {});
-      }
-    };
-    r.fig.addEventListener('click', onActivate);
-    r.fig.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onActivate(); }
+  const io = new IntersectionObserver(entries => {
+    for (const en of entries) c.setRatio(en.target.dataset.reel, en.isIntersecting ? en.intersectionRatio : 0);
+    c.apply();
+  }, { threshold: Array.from({ length: 21 }, (_, i) => i / 20) });
+
+  for (const e of els) {
+    io.observe(e.fig);
+    e.fig.tabIndex = 0;
+    e.fig.setAttribute('role', 'button');
+    e.fig.setAttribute('aria-label', 'Toggle sound');
+    e.fig.addEventListener('click', () => c.activate(e.key));
+    e.fig.addEventListener('keydown', ev => {
+      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); c.activate(e.key); }
     });
+    // Our own pauses also fire this; apply() is idempotent, so only a pause of the active reel restarts it.
+    e.video.addEventListener('pause', () => queueMicrotask(() => c.onSystemPause(e.key)));
   }
 
-  document.addEventListener('visibilitychange', apply);
+  document.addEventListener('visibilitychange', () => c.setHidden(document.hidden));
 }

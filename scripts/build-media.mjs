@@ -13,8 +13,8 @@ const MB = 1024 * 1024;
 
 const VIDEOS = [
   { name: 'loader', src: `${ROOT}/03_Brand Assets/LogoAnimation.mp4`, budget: 3 * MB, audio: false },
-  { name: 'demo-reel', src: `${ROOT}/01_Video/Hindsight_DemoReel2024.mp4`, budget: 25 * MB, audio: true },
-  { name: 'live-reel', src: `${ROOT}/01_Video/Hindsight_LiveReel2026.mp4`, budget: 25 * MB, audio: true },
+  { name: 'demo-reel', src: `${ROOT}/01_Video/Hindsight_DemoReel2024.mp4`, budget: 25 * MB, audio: true, posterAt: 12 },
+  { name: 'live-reel', src: `${ROOT}/01_Video/Hindsight_LiveReel2026.mp4`, budget: 25 * MB, audio: true, posterAt: 72 },
 ];
 
 const fresh = (out, src) => fs.existsSync(out) && fs.statSync(out).mtimeMs > fs.statSync(src).mtimeMs;
@@ -24,7 +24,7 @@ function run(args) {
   if (r.status !== 0) throw new Error(`ffmpeg failed: ${args.join(' ')}`);
 }
 
-function encode({ name, src, budget, audio }) {
+function encode({ name, src, budget, audio, posterAt = 1 }) {
   const out = `media/video/${name}.mp4`;
   if (!fresh(out, src)) {
     // Past CRF 30 at 1080p, motion-heavy visuals go blocky; 720p at a sane CRF looks better at the same size.
@@ -40,7 +40,7 @@ function encode({ name, src, budget, audio }) {
   } else console.log(`${name}: up to date`);
   if (audio) {
     const poster = `media/video/${name}-poster.jpg`;
-    if (!fresh(poster, src)) run(['-ss', '1', '-i', src, '-frames:v', '1', '-vf', "scale=-2:'min(1080,ih)'", '-q:v', '4', poster]);
+    if (!fresh(poster, src)) run(['-ss', String(posterAt), '-i', src, '-frames:v', '1', '-vf', "scale=-2:'min(1080,ih)'", '-q:v', '4', poster]);
   }
 }
 

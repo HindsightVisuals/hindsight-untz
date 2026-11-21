@@ -96,7 +96,7 @@ main { padding: var(--nav-h) var(--pad) 0; max-width: 1680px; margin: 0 auto; }
 }
 
 /* ---------- gallery: 3 / 2 / 1 columns, two shots span two ---------- */
-.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.gallery { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-flow: dense; gap: 8px; }
 .gallery img { width: 100%; height: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #0a0a0a; }
 .gallery img.wide { grid-column: span 2; aspect-ratio: auto; }
 @media (max-width: 900px) {

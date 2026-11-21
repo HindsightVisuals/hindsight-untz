@@ -28,3 +28,12 @@ test('exactly 10 photos at 1600 and 800', () => {
 test('no file under media/ is 50 MB or more', () => {
   for (const f of walk('media')) assert.ok(size(f) < 50 * MB, f);
 });
+
+test('reel posters show footage, not the near-black logo sting', async () => {
+  const sharp = (await import('sharp')).default;
+  for (const r of ['demo-reel', 'live-reel']) {
+    const { channels } = await sharp(`media/video/${r}-poster.jpg`).stats();
+    const mean = channels.slice(0, 3).reduce((n, c) => n + c.mean, 0) / 3;
+    assert.ok(mean > 30, `${r} poster mean brightness ${mean.toFixed(1)}`);
+  }
+});
